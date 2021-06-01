@@ -38,6 +38,8 @@
 
 ## Vue3 第四周主線
 
+<a href="https://larrywithmanpower.github.io/vue3-mainProject/week4/index.html">第四周作業 LV3</a>
+
 ### 功能
 1. 加入元件化的pagination
 2. 所有modal都改成元件
