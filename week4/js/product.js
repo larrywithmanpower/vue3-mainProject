@@ -46,8 +46,8 @@ const app = createApp({
                     if (res.data.success) {
                         this.products = res.data.products;
                         this.pagination = res.data.pagination;
-                        console.log(res);
-                        console.log(this.pagination);
+                        // console.log(res);
+                        // console.log(this.pagination);
                     } else {
                         errDataModal.show();
                     }
