@@ -135,7 +135,6 @@ export default {
             },
             // ! 在內層加入上傳圖片方法
             uploadToCloud() {
-                // ? 上傳的檔案去哪看??
                 // ! DOM要放在子元件內才找的到
                 const fileInput = document.querySelector('#photoFile');
                 // 取出fileInput中的相片檔案
@@ -148,16 +147,20 @@ export default {
                 axios.post(`${apiUrl}/api/${apiPath}/admin/upload`, formData)
                     .then((res) => {
                         // console.log(res.data);
-                        // ! 判斷tempProduct.imageUrl是否存在，不存在就加入倒imageUrl(單張)，存在新增到陣列imagesUrl中
-                        if (!this.tempProduct.imageUrl) {
-                            this.tempProduct.imageUrl = res.data.imageUrl;
-                        } else {
-                            this.tempProduct.imagesUrl.push(res.data.imageUrl);
+                        if (res.data.success) {
+                            // ! 判斷tempProduct.imageUrl是否存在，不存在就加入倒imageUrl(單張)，存在新增到陣列imagesUrl中
+                            if (!this.tempProduct.imageUrl) {
+                                this.tempProduct.imageUrl = res.data.imageUrl;
+                            } else {
+                                this.tempProduct.imagesUrl.push(res.data.imageUrl);
+                            };
+                            // 加入傳上圖片就清空value文字
+                            fileInput.value = '';
                         }
                     })
                     .catch((err) => {
                         console.log(err);
                     })
-            }
+            },
     },
 }
