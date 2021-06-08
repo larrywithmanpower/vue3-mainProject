@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第五周</title>
+
+    <!-- BS5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <!-- fontawsome -->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <!-- Lastly add this package -->
+
+    <link href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4/dist/vue-loading.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="app">
+        <div class="container mx-auto">
+            <h1 class="text-center py-3">第五周作業</h1>
+            <!-- ? table -->
+            <table class="table table-light table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" width="20%">圖片</th>
+                        <th scope="col" width="20%">商品名稱</th>
+                        <th scope="col" width="20%">價格</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <!-- products List -->
+                <tbody>
+                    <tr v-for="(item, index) in products" :key="item.id">
+                        <td>
+                            <div :style="{ 'background-image': `url(${item.imageUrl})` }"
+                                style="height: 100px; background-position: center center; background-size: cover;">
+                            </div>
+                        </td>
+                        <td>{{ item.title }}</td>
+                        <td>
+                            <p><small><del>原價 {{ item.origin_price }}</del></small></p>
+                            <p class="text-danger h5"><strong>特價$ {{ item.price }} 元</strong></p>
+
+                        </td>
+                        <td class="align-middle text-center">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-outline-danger" @click="getProduct(item)">
+                                    <i class="fas fa-cog fa-spin" :disabled="loadingStatus.loadingItem === item.id"
+                                        v-if="loadingStatus.loadingItem === item.id"></i>
+                                    查看更多
+                                </button>
+                                <button type="button" class="btn btn-outline-success" @click="addCart(item.id)">
+                                    <i class="fas fa-cog fa-spin" :disabled="loadingStatus.loadingItem === item.id"
+                                        v-if="loadingStatus.loadingItem === item.id"></i>
+                                    加入購物車
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                </tbody>
+            </table>
+            <!-- <div class="d-grid gap-2">
+                <button class="btn btn-info btn-lg">查看購物車</button>
+            </div> -->
+            <hr class="my-5">
+            <!-- ? cart List -->
+            <h2 class="text-center d-flex justify-content-between">
+                購物車列表
+                <button type="button" class="btn btn-sm btn-outline-danger" :class="{ 'disabled': carts.length === 0 }"
+                    @click="delCarts">
+                    清空購物車
+                </button>
+            </h2>
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col">#</th>
+                        <th scope="col" width="40%">品名</th>
+                        <th scope="col" width="25%">數量 / 單位</th>
+                        <th scope="col" width="25%">單價</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template v-for="(cart, index) in carts" :key="cart.id">
+                        <tr>
+                            <th scope="row">
+                                <button type="button" class="btn btn-sm btn-danger" @click="delCartItem(cart)">
+                                    X
+                                </button>
+                            </th>
+                            <td class="text-center">{{ cart.product.title }}</td>
+                            <td>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" class="form-control" min="1" v-model.number="cart.qty"
+                                        :disabled="cart.id === loadingStatus.loadingItem" @change="updateCart(cart)">
+                                    <span class="input-group-text">{{ cart.product.unit }}</span>
+                                </div>
+                            </td>
+                            <td class="text-end">{{ cart.final_total }} 元</td>
+                        </tr>
+                    </template>
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <th class="text-center">總計</th>
+                        <td class="text-end">{{ total }} 元</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <!--? form -->
+            <!-- ! 會忘記加上rules 也忘記綁class 所以什麼效果都沒有 -->
+            <section class="d-flex justify-content-center py-5">
+                <v-form action="" class="col-6" v-slot="{ errors }" @submit="onSubmit" ref="form">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <v-field type="email" class="form-control" id="email" placeholder="請輸入Email"
+                            v-model="form.user.email" name="email"
+                            rules="email|required"
+                            :class="{ 'is-invalid': errors['email'] }"></v-field>
+                        <error-message name="email" class="invalid-feedback"></error-message>
+                    </div>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">收件人姓名</label>
+                        <v-field type="text" class="form-control" id="username" placeholder="請輸入姓名"
+                            v-model="form.user.name" name="姓名"
+                            rules="required"
+                            :class="{ 'is-invalid': errors['姓名'] }"></v-field>
+                        <error-message name="姓名" class="invalid-feedback"></error-message>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tel" class="form-label">收件人電話</label>
+                        <v-field type="tel" class="form-control" 
+                            id="tel"       
+                            placeholder="請輸入電話" 
+                            v-model="form.user.tel"
+                            name="電話"
+                            :rules="isPhone"
+                            :class="{ 'is-invalid': errors['電話'] }">
+                        </v-field>
+                        <error-message name="電話" class="invalid-feedback"></error-message>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">收件人地址</label>
+                        <v-field type="text" class="form-control" id="address" placeholder="請輸入地址"
+                            v-model="form.user.address" name="地址"
+                            rules="required"
+                            :class="{ 'is-invalid': errors['地址'] }"
+                            ></v-field>
+                        <error-message name="地址" class="invalid-feedback"></error-message>
+                    </div>
+                    <div class="mb-3">
+                        <label for="leaveMsg" class="form-label">留言</label>
+                        <textarea type="text" class="form-control" id="leaveMsg" placeholder="你想說什麼??" rows="5"
+                            v-model="form.message"></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-danger"
+                        :disabled="carts.length === 0">
+                            送出訂單
+                        </button>
+                    </div>
+                </v-form>
+
+            </section>
+
+            <!-- ? single product modal -->
+            <!-- ! modal一直掛載不到，因為我忘記在這裡加上ref -->
+            <!-- ! :product=""帶錯位置 -->
+            <product-modal ref="productModal" :product="product" @add-cart="addCart"></product-modal>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- js套件 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/4.1.17/vee-validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vee-validate/i18n@4.1.17/dist/vee-validate-i18n.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vee-validate/rules@4.1.17/dist/vee-validate-rules.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.9.1/axios.min.js'
+        integrity='sha512-Xk3wWei2TGrsh9kDSBKUMIjw/86sLUvhtnv9f7fOuIwhhiUTKz8szkWkzHthrM5Bb3Bu9idSzkxOrkzhcneuiw=='
+        crossorigin='anonymous'></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+        integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
+        crossorigin="anonymous"></script>
+    <script src="./js/app.js" type="module"></script>
+</body>
+
+</html>

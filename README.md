@@ -45,5 +45,15 @@
 2. 所有modal都改成元件
 3. 加入上傳圖片功能
 
+<hr>
 
+## Vue3 第五周主線
+
+<a href="#">第五周作業 LV3</a>
+
+### 功能
+1. 串接前台API
+2. 製作loading讀取效果
+3. 加入VeeValidate表單驗證
+4. 使用$refs來取得DOM元素
 
