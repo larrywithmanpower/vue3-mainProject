@@ -49,7 +49,7 @@
 
 ## Vue3 第五周主線
 
-<a href="#">第五周作業 LV3</a>
+<a href="https://larrywithmanpower.github.io/vue3-mainProject/week5/index.html">第五周作業 LV3</a>
 
 ### 功能
 1. 串接前台API
