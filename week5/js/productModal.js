@@ -45,11 +45,9 @@ export default {
         return {
             productModal: '',
             tempProduct: {},
-            // ! 使用qty綁定數量，但為何不使用products回傳的num??
             qty: 1
         }
     },
-    //! 使用watch 來賦予給tempProduct
     watch: {
         product() {
             this.tempProduct = this.product;

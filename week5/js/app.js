@@ -48,14 +48,13 @@ const app = Vue.createApp({
         productModal,
     },
     methods: {
+        // ? 取得商品資訊
         getProducts() {
             const url = `${apiUrl}/api/${apiPath}/products`;
             let loader = this.$loading.show();
             axios.get(url)
                 .then((res) => {
                     if (res.data.success) {
-                        // ! vue loading試用，不熟，然後送我39個錯誤??是因為非同步的問題嗎???
-                        // simulate AJAX                        
                         this.products = res.data.products;
                         loader.hide()
                     } else {
@@ -66,6 +65,7 @@ const app = Vue.createApp({
                     console.log(err);
                 })
         },
+        // ? 取得單一商品
         getProduct(item) {
             this.loadingStatus.loadingItem = item.id;
             // console.log(this.loadingStatus.loadingItem);
@@ -75,7 +75,6 @@ const app = Vue.createApp({
             axios.get(url)
                 .then((res) => {
                     if (res.data.success) {
-                        // ! data內層的product才是我要的東西，難怪用半天都沒有東西
                         // console.log(res.data);
                         this.product = res.data.product;
                         // console.log(this.product);
@@ -83,12 +82,12 @@ const app = Vue.createApp({
                     } else {
                         alert(res.data.message);
                     }
-
                 })
                 .catch((err) => {
                     console.log(err);
                 })
         },
+        // ? 取得購物車資訊
         getCarts() {
             const url = `${apiUrl}/api/${apiPath}/cart`;
             axios.get(url)
@@ -106,6 +105,7 @@ const app = Vue.createApp({
                     console.log(err);
                 })
         },
+        // ? 加入購物車
         addCart(id, qty = 1) {
             this.loadingStatus.loadingItem = id;
             // ! product_id(String)、qty(Number) 為必填欄位
@@ -129,14 +129,14 @@ const app = Vue.createApp({
                 .catch((err) => {
                     console.log(err);
                 })
-
         },
+        // ? 清空購物車
         delCarts() {
             const url = `${apiUrl}/api/${apiPath}/carts`;
             axios.delete(url)
                 .then((res) => {
                     if (res.data.success) {
-                        console.log(res);
+                        // console.log(res);
                         this.getCarts();
                         alert(`${res.data.message}所有商品`);
                     } else {
@@ -147,6 +147,7 @@ const app = Vue.createApp({
                     console.log(err);
                 })
         },
+        // ? 刪除單一購物車產品
         delCartItem(cart) {
             const url = `${apiUrl}/api/${apiPath}/cart/${cart.id}`;
             axios.delete(url)
@@ -162,6 +163,7 @@ const app = Vue.createApp({
                     console.log(err);
                 })
         },
+        // ? 更新購物車
         updateCart(cart) {
             console.log(cart);
             const url = `${apiUrl}/api/${apiPath}/cart/${cart.id}`;
@@ -184,19 +186,18 @@ const app = Vue.createApp({
                     console.log(err);
                 })
         },
+        // ? 送出訂單
         onSubmit() {
             const url = `${apiUrl}/api/${apiPath}/order`;
             const user = this.form.user;
             const message = this.form.message;
-            console.log(user);
+            // console.log(user);
             axios.post(url, { data: {user, message} })
                 .then((res) => {
                     if (res.data.success) {
-                        console.log(res);
+                        // console.log(res);
                         alert(res.data.message);
                         //! VeeValidate內建函式
-                        console.log(this.$refs);
-
                         this.$refs.form.resetForm();
                     } else {
                         alert(res.data.message);
@@ -217,7 +218,6 @@ const app = Vue.createApp({
     }
 })
 
-// 不知道如何運用到按鈕之中??
 app.use(VueLoading);
 app.component('VForm', VeeValidate.Form);
 app.component('VField', VeeValidate.Field);

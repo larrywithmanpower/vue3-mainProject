@@ -22,6 +22,7 @@
     <div id="app">
         <div class="container mx-auto">
             <h1 class="text-center py-3">第五周作業</h1>
+            
             <!-- ? table -->
             <table class="table table-light table-hover">
                 <thead class="table-dark">
@@ -44,7 +45,6 @@
                         <td>
                             <p><small><del>原價 {{ item.origin_price }}</del></small></p>
                             <p class="text-danger h5"><strong>特價$ {{ item.price }} 元</strong></p>
-
                         </td>
                         <td class="align-middle text-center">
                             <div class="btn-group" role="group">
@@ -61,13 +61,11 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
                 </tbody>
             </table>
-            <!-- <div class="d-grid gap-2">
-                <button class="btn btn-info btn-lg">查看購物車</button>
-            </div> -->
+
             <hr class="my-5">
+
             <!-- ? cart List -->
             <h2 class="text-center d-flex justify-content-between">
                 購物車列表
@@ -86,26 +84,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <template v-for="(cart, index) in carts" :key="cart.id">
-                        <tr>
-                            <th scope="row">
-                                <button type="button" class="btn btn-sm btn-danger" @click="delCartItem(cart)">
-                                    X
-                                </button>
-                            </th>
-                            <td class="text-center">{{ cart.product.title }}</td>
-                            <td>
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text">$</span>
-                                    <input type="number" class="form-control" min="1" v-model.number="cart.qty"
-                                        :disabled="cart.id === loadingStatus.loadingItem" @change="updateCart(cart)">
-                                    <span class="input-group-text">{{ cart.product.unit }}</span>
-                                </div>
-                            </td>
-                            <td class="text-end">{{ cart.final_total }} 元</td>
-                        </tr>
-                    </template>
-
+                    <tr v-for="(cart, index) in carts" :key="cart.id">
+                        <th scope="row">
+                            <button type="button" class="btn btn-sm btn-danger" @click="delCartItem(cart)">
+                                X
+                            </button>
+                        </th>
+                        <td class="text-center">{{ cart.product.title }}</td>
+                        <td>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text">$</span>
+                                <input type="number" 
+                                    class="form-control" 
+                                    min="1" 
+                                    v-model.number="cart.qty"
+                                    :disabled="cart.id === loadingStatus.loadingItem" 
+                                    @change="updateCart(cart)">
+                                <span class="input-group-text">{{ cart.product.unit }}</span>
+                            </div>
+                        </td>
+                        <td class="text-end">{{ cart.final_total }} 元</td>
+                    </tr>
                 </tbody>
                 <tfoot>
                     <tr>
@@ -116,10 +115,10 @@
                     </tr>
                 </tfoot>
             </table>
+
             <!--? form -->
-            <!-- ! 會忘記加上rules 也忘記綁class 所以什麼效果都沒有 -->
             <section class="d-flex justify-content-center py-5">
-                <v-form action="" class="col-6" v-slot="{ errors }" @submit="onSubmit" ref="form">
+                <v-form class="col-6" v-slot="{ errors }" @submit="onSubmit" ref="form">
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <v-field type="email" class="form-control" id="email" placeholder="請輸入Email"
@@ -138,9 +137,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="tel" class="form-label">收件人電話</label>
-                        <v-field type="tel" class="form-control" 
-                            id="tel"       
-                            placeholder="請輸入電話" 
+                        <v-field type="tel" class="form-control" id="tel" placeholder="請輸入電話" 
                             v-model="form.user.tel"
                             name="電話"
                             :rules="isPhone"
@@ -151,7 +148,8 @@
                     <div class="mb-3">
                         <label for="address" class="form-label">收件人地址</label>
                         <v-field type="text" class="form-control" id="address" placeholder="請輸入地址"
-                            v-model="form.user.address" name="地址"
+                            v-model="form.user.address" 
+                            name="地址"
                             rules="required"
                             :class="{ 'is-invalid': errors['地址'] }"
                             ></v-field>
@@ -169,12 +167,9 @@
                         </button>
                     </div>
                 </v-form>
-
             </section>
 
-            <!-- ? single product modal -->
-            <!-- ! modal一直掛載不到，因為我忘記在這裡加上ref -->
-            <!-- ! :product=""帶錯位置 -->
+            <!-- ? single product modal -->            
             <product-modal ref="productModal" :product="product" @add-cart="addCart"></product-modal>
         </div>
     </div>
