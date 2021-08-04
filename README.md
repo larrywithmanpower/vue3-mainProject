@@ -1,4 +1,4 @@
-# Vue3 作品實戰班
+# Vue3 作品
 <a href="https://larrywithmanpower.github.io/vue3-mainProject/">首頁</a>
 
 ## Vue3 第一周主線
