@@ -1,7 +1,7 @@
-# Vue3 作品
+# Vue3 作品前置
 <a href="https://larrywithmanpower.github.io/vue3-mainProject/">首頁</a>
 
-## Vue3 第一周主線
+## Vue3 第一周
 <a href="https://larrywithmanpower.github.io/vue3-mainProject/week1/index.html">第一周作業</a>
 
 ### 功能
@@ -9,7 +9,7 @@
 
 <hr>
 
-## Vue3 第二周主線
+## Vue3 第二周
 <a href="https://larrywithmanpower.github.io/vue3-mainProject/week2/LV1/">第二周作業 LV1</a><br>
 <a href="https://larrywithmanpower.github.io/vue3-mainProject/week2/LV2/">第二周作業 LV2 + LV3</a>
 
@@ -22,7 +22,7 @@
 
 <hr>
 
-## Vue3 第三周主線
+## Vue3 第三周
 
 <a href="https://larrywithmanpower.github.io/vue3-mainProject/week3/LV1/index.html">第三周作業 LV1</a><br>
 <a href="https://larrywithmanpower.github.io/vue3-mainProject/week3/LV2/index.html">第三周作業 LV2</a><br>
@@ -36,7 +36,7 @@
 
 <hr>
 
-## Vue3 第四周主線
+## Vue3 第四周
 
 <a href="https://larrywithmanpower.github.io/vue3-mainProject/week4/index.html">第四周作業 LV3</a>
 
